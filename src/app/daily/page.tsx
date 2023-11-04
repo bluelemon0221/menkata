@@ -1,10 +1,10 @@
 import React from "react";
-import DailyReport from "./DailyReport";
+import { InputDetails } from "./components/InputDetails";
 
 const page = () => {
   return (
     <div>
-      <DailyReport />
+      <InputDetails />
     </div>
   );
 };
