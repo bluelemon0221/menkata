@@ -1,38 +1,36 @@
 "use client";
-
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
+import { Margin } from "@mui/icons-material";
 
-type Details = {
-  label: string;
-};
-
+// 細目入力テキストボックスの定義
 export const InputDetails = () => {
-  const [inputValue, setInputValue] = useState<Details | null>(null);
-  const details = [{ label: "105 逆打ち" }, { label: "114 製図・作図" }];
+  const [inputValue, setInputValue] = useState<string | null>(null);
+  const details = ["105 逆打ち", "114 製図・作図", "999 その他"];
 
+  // 途中までの入力でも選択肢が一つに絞れればそれを選択するようにする関数
   const valueInterpolation = () => {
-    const result = details.filter((value) => {
-      return value.label.includes(inputValue);
-    });
-    if (result.length === 1) {
-      console.log(result);
-      setInputValue(result[0].label);
-      details.find((value) => value.label === result[0].label);
-    } else {
-      setInputValue(null);
+    if (inputValue) {
+      const result: string | undefined = details.find((value) =>
+        value.includes(inputValue)
+      );
+      if (result) {
+        setInputValue(result);
+      } else {
+        setInputValue(null);
+      }
     }
   };
 
   return (
     <div>
+      {/* 確認用↓ */}
       <div>{`inputValue: '${inputValue}'`}</div>
       <br />
       <Autocomplete
         onFocus={() => setInputValue(null)}
-        value={inputValue !== null ? `${inputValue}` : ""}
-        // inputValue={inputValue}
+        value={inputValue !== null ? inputValue : ""}
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
@@ -43,6 +41,7 @@ export const InputDetails = () => {
             {...params}
             label="細目コード"
             onBlur={valueInterpolation}
+            sx={{ marginTop: -1 }}
           />
         )}
       />
