@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config(); // .envファイルから環境変数を読み込む
 
-console.log(process.env.DB_PASSWORD);
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,

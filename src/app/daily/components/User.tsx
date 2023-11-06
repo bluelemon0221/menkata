@@ -9,7 +9,7 @@ function User() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data); // データをコンソールに表示
-        setUser(data.users);
+        setUser(data);
       })
       .catch((error) => {
         console.error("Fetch error:", error);
@@ -18,11 +18,7 @@ function User() {
   return (
     <div>
       <h1>Users</h1>
-      <ul>
-        {user.map((user) => (
-          <li key={user.id}>{user.name}</li>
-        ))}
-      </ul>
+      <p>{user}</p>
     </div>
   );
 }
