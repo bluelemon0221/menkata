@@ -3,6 +3,7 @@ import { InputDetails } from "./components/InputDetails";
 import { InputTaskID } from "./components/InputTaskID";
 import { Grid } from "@mui/material";
 import { InputHour } from "./components/InputHour";
+import User from "./components/User";
 
 const page = () => {
   return (
@@ -18,6 +19,7 @@ const page = () => {
           <InputHour />
         </Grid>
       </Grid>
+      <User />
     </div>
   );
 };

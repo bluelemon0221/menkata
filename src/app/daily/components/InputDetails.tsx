@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Margin } from "@mui/icons-material";
 
 // 細目入力テキストボックスの定義
 export const InputDetails = () => {
@@ -22,15 +21,13 @@ export const InputDetails = () => {
       }
     }
   };
-
   return (
     <div>
-      {/* 確認用↓ */}
       <div>{`inputValue: '${inputValue}'`}</div>
       <br />
       <Autocomplete
-        onFocus={() => setInputValue(null)}
-        value={inputValue !== null ? inputValue : ""}
+        value={inputValue !== null ? inputValue : null}
+        isOptionEqualToValue={(option, value) => option === value}
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
