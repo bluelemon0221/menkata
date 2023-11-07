@@ -4,6 +4,7 @@ import { InputTaskID } from "./components/InputTaskID";
 import { Grid } from "@mui/material";
 import { InputHour } from "./components/InputHour";
 import User from "./components/User";
+import Job from "./components/Job";
 
 const page = () => {
   return (
@@ -19,7 +20,8 @@ const page = () => {
           <InputHour />
         </Grid>
       </Grid>
-      <User />
+      {/* <User /> */}
+      <Job />
     </div>
   );
 };

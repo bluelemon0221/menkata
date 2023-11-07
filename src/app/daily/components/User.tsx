@@ -17,7 +17,7 @@ function User() {
     fetch("/api/user")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data); // データをコンソールに表示
+        // console.log(data); // データをコンソールに表示
         setUser(data);
       })
       .catch((error) => {
