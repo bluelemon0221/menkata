@@ -24,7 +24,6 @@ export const InputDetails = () => {
   return (
     <div>
       <div>{`inputValue: '${inputValue}'`}</div>
-      <br />
       <Autocomplete
         value={inputValue !== null ? inputValue : null}
         isOptionEqualToValue={(option, value) => option === value}
@@ -38,7 +37,7 @@ export const InputDetails = () => {
             {...params}
             label="細目コード"
             onBlur={valueInterpolation}
-            sx={{ marginTop: -1 }}
+            margin="normal"
           />
         )}
       />

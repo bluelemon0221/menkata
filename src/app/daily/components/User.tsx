@@ -1,6 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 
+type User = {
+  2021: number | null;
+  2022: number | null;
+  2023: number | null;
+  2024: number | null;
+  name: string;
+  id: number;
+};
+
 function User() {
   const [user, setUser] = useState([]);
 
@@ -18,7 +27,9 @@ function User() {
   return (
     <div>
       <h1>Users</h1>
-      <p>{user}</p>
+      {user.map((u: User) => {
+        return <p>{u.id}</p>;
+      })}
     </div>
   );
 }
