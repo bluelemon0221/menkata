@@ -24,6 +24,9 @@ export const InputTaskID = () => {
   const [job, setJob] = useState([]);
 
   useEffect(() => {
+    if (!inputValue) {
+      return;
+    }
     fetch(`/api/job/${inputValue}`)
       .then((response) => response.json())
       .then((data) => {
@@ -50,7 +53,7 @@ export const InputTaskID = () => {
       <div>{`inputValue: '${inputValue}'`}</div>
       <TextField
         label="受託コード"
-        value={inputValue}
+        value={inputValue || ""}
         margin="normal"
         inputProps={{
           autoComplete: "off",
@@ -62,7 +65,13 @@ export const InputTaskID = () => {
       />
       <div>
         {job.map((u: Job) => {
-          return <p>{u.code}</p>;
+          return (
+            <div>
+              <p>{u.code}</p>
+              <p>{u.client_name}</p>
+              <p>{u.address1}</p>
+            </div>
+          );
         })}
       </div>
     </div>

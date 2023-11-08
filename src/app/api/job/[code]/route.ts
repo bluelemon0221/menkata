@@ -1,15 +1,18 @@
 import { query } from "@/lib/mysql";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
 export async function GET(
   req: NextApiRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: { code: string } }
 ) {
   try {
-    const results = await query(
-      `SELECT * FROM jobs where code = "${params.slug}"`
-    );
+    const { code } = params;
+
+    if (!code) {
+      return;
+    }
+    const results = await query(`SELECT * FROM jobs where code = "${code}"`);
     return NextResponse.json(results, { status: 200 });
   } catch (error) {
     return NextResponse.json(error);
