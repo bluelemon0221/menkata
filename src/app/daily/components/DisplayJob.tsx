@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 type Job = {
@@ -21,16 +22,13 @@ type JobCode = { jobcode: string | null };
 
 export const DisplayJob = ({ jobcode }: JobCode) => {
   const [job, setJob] = useState([]);
-  console.log(jobcode);
   useEffect(() => {
     if (!jobcode) {
       return;
     }
-    console.log(jobcode);
     fetch(`/api/job/${jobcode}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data); // データをコンソールに表示
         setJob(data);
       })
       .catch((error) => {
@@ -44,8 +42,10 @@ export const DisplayJob = ({ jobcode }: JobCode) => {
       {job.map((u: Job) => {
         return (
           <div>
-            <p>{u.client_name}</p>
-            <p>{u.address1}</p>
+            <Typography variant="subtitle1">
+              <p>{u.client_name}</p>
+              <p>{u.address1}</p>
+            </Typography>
           </div>
         );
       })}

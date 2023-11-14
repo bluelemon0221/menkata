@@ -24,64 +24,39 @@ type UpdateJobCode = {
   jobcode: string | null;
 };
 
-export const InputTaskID = ({ updateJobCode, jobcode }: UpdateJobCode) =>
-  // jobcode: string | null
-  {
-    // const [inputValue, setInputValue] = useState<string | null>(null);
-    // const [job, setJob] = useState([]);
-
-    // useEffect(() => {
-    //   if (!inputValue) {
-    //     return;
-    //   }
-    //   fetch(`/api/job/${inputValue}`)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log(data); // データをコンソールに表示
-    //       setJob(data);
-    //     })
-    //     .catch((error) => {
-    //       console.error("Fetch error:", error);
-    //     });
-    // }, [inputValue]);
-
-    const handleInput = (e: React.FocusEvent<HTMLInputElement>) => {
-      const input = e.target.value;
-      updateJobCode(
-        moji(input)
-          .convert("ZE", "HE")
-          .trim()
-          .reject("HG")
-          .toString()
-          .toUpperCase()
-      );
-    };
-    return (
-      <div>
-        <div>{`inputValue: '${jobcode}'`}</div>
-        <TextField
-          label="受託コード"
-          value={jobcode || ""}
-          margin="normal"
-          inputProps={{
-            autoComplete: "off",
-          }}
-          onChange={(e) => {
-            updateJobCode(e.target.value);
-          }}
-          onBlur={handleInput}
-        />
-        {/* <div>
-          {job.map((u: Job) => {
-            return (
-              <div>
-                <p>{u.code}</p>
-                <p>{u.client_name}</p>
-                <p>{u.address1}</p>
-              </div>
-            );
-          })}
-        </div> */}
-      </div>
-    );
+export const InputTaskID = ({ updateJobCode }: UpdateJobCode) => {
+  const [jobcode, setJobcode] = useState<string | null>(null);
+  const handleInput = (e: React.FocusEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    if (input) {
+      const newInput = moji(input)
+        .convert("ZE", "HE")
+        .trim()
+        .reject("HG")
+        .toString()
+        .toUpperCase();
+      setJobcode(newInput);
+      updateJobCode(newInput);
+    } else {
+      setJobcode(null);
+      return;
+    }
   };
+  return (
+    <div>
+      <div>{`inputValue: '${jobcode}'`}</div>
+      <TextField
+        label="受託コード"
+        value={jobcode || ""}
+        margin="normal"
+        inputProps={{
+          autoComplete: "off",
+        }}
+        onChange={(e) => {
+          setJobcode(e.target.value);
+        }}
+        onBlur={handleInput}
+      />
+    </div>
+  );
+};

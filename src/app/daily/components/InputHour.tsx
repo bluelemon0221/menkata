@@ -2,7 +2,11 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 
-export const InputHour = () => {
+type InputHourProps = {
+  updateHour: (newHour: number | null) => void;
+};
+
+export const InputHour = ({ updateHour }: InputHourProps) => {
   const [inputValue, setInputValue] = useState<string | null>(null);
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -17,7 +21,13 @@ export const InputHour = () => {
       // 整数の場合、小数点以下1桁を追加
       e.target.value = value.toFixed(1);
     }
-    setInputValue(e.target.value);
+
+    if (e.target.value) {
+      setInputValue(e.target.value);
+      updateHour(value);
+    } else {
+      setInputValue(null);
+    }
   };
 
   return (
@@ -34,7 +44,11 @@ export const InputHour = () => {
           autoComplete: "off",
         }}
         onChange={(e) => {
-          setInputValue(e.target.value);
+          if (e.target.value) {
+            setInputValue(e.target.value);
+          } else {
+            setInputValue(null);
+          }
         }}
         onBlur={handleBlur}
       />

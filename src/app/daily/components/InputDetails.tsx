@@ -3,8 +3,12 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
+type InputDetailsProps = {
+  updateDetailsCode: (newDetailsCode: string | null) => void;
+};
+
 // 細目入力テキストボックスの定義
-export const InputDetails = () => {
+export const InputDetails = ({ updateDetailsCode }: InputDetailsProps) => {
   const [inputValue, setInputValue] = useState<string | null>(null);
   const details = ["105 逆打ち", "114 製図・作図", "999 その他"];
 
@@ -16,6 +20,7 @@ export const InputDetails = () => {
       );
       if (result) {
         setInputValue(result);
+        updateDetailsCode(result);
       } else {
         setInputValue(null);
       }
