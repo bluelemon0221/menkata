@@ -32,7 +32,7 @@ export const InputHour = ({ updateHour }: InputHourProps) => {
 
   return (
     <div>
-      <div>{`inputValue: '${inputValue}'`}</div>
+      <div>{`${inputValue}`}</div>
       <TextField
         label="作業時間"
         margin="normal"

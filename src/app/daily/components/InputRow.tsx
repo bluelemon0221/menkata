@@ -6,6 +6,7 @@ import { InputDetails } from "./InputDetails";
 import { InputHour } from "./InputHour";
 import { DisplayJob } from "./DisplayJob";
 import { DailyInputObject } from "../types";
+import { InputMemo } from "./InputMemo";
 
 type InputRowProps = {
   data: DailyInputObject["data"][0];
@@ -22,47 +23,36 @@ export const InputRow = ({ data, onDataChange }: InputRowProps) => {
   ) => {
     onDataChange(data.dateIndex, { [key]: value });
   };
-  const [jobcode, setJobCode] = useState<string | null>(null);
-  const [detailcode, setDetailCode] = useState<string | null>(null);
-  const [hour, setHour] = useState<string | null>(null);
-
-  // const updateJobCode = (newJobCode: string | null) => {
-  //   setJobCode(newJobCode);
-  // };
-  // const updateDetailCode = (newDetailcode: string | null) => {
-  //   setDetailCode(newDetailcode);
-  // };
-  // const updateHour = (newHour: string | null) => {
-  //   setHour(newHour);
-  // };
 
   return (
     <div>
       <Grid container>
-        <Grid item xl={1.5}>
+        <Grid item xl={0.8}>
           <InputTaskID
             updateJobCode={(newJobCode) =>
               onDataChange(data.dateIndex, { jobCode: newJobCode })
             }
-            // jobcode={data.jobCode}
           />
         </Grid>
-        <Grid item xl={1.5}>
+        <Grid item xl={1.3}>
           <InputDetails
             updateDetailsCode={(newDetailsCode) =>
               onDataChange(data.dateIndex, { detailsCode: newDetailsCode })
             }
           />
         </Grid>
-        <Grid item xl={1.5}>
+        <Grid item xl={0.68}>
           <InputHour
             updateHour={(newHour) =>
               onDataChange(data.dateIndex, { hour: newHour })
             }
           />
         </Grid>
+        <Grid item xl={2}>
+          <InputMemo />
+        </Grid>
         <Grid item xl={3}>
-          <DisplayJob jobcode={jobcode} />
+          <DisplayJob jobcode={data.jobCode} />
         </Grid>
       </Grid>
     </div>

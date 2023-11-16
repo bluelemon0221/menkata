@@ -21,7 +21,6 @@ type Job = {
 
 type UpdateJobCode = {
   updateJobCode: (newJobCode: string | null) => void;
-  jobcode: string | null;
 };
 
 export const InputTaskID = ({ updateJobCode }: UpdateJobCode) => {
@@ -44,16 +43,21 @@ export const InputTaskID = ({ updateJobCode }: UpdateJobCode) => {
   };
   return (
     <div>
-      <div>{`inputValue: '${jobcode}'`}</div>
+      <div>{`${jobcode}`}</div>
       <TextField
         label="受託コード"
         value={jobcode || ""}
         margin="normal"
+        sx={{ width: 120 }}
         inputProps={{
           autoComplete: "off",
         }}
         onChange={(e) => {
-          setJobcode(e.target.value);
+          if (e.target.value) {
+            setJobcode(e.target.value);
+          } else {
+            setJobcode(null);
+          }
         }}
         onBlur={handleInput}
       />

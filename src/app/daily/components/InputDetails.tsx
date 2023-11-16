@@ -28,12 +28,16 @@ export const InputDetails = ({ updateDetailsCode }: InputDetailsProps) => {
   };
   return (
     <div>
-      <div>{`inputValue: '${inputValue}'`}</div>
+      <div>{`${inputValue}`}</div>
       <Autocomplete
         value={inputValue !== null ? inputValue : null}
         isOptionEqualToValue={(option, value) => option === value}
-        onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue);
+        onInputChange={(e, newInputValue) => {
+          if (newInputValue) {
+            setInputValue(newInputValue);
+          } else {
+            setInputValue(null);
+          }
         }}
         options={details}
         sx={{ width: 200 }}
