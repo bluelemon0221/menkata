@@ -2,7 +2,10 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 
-export const InputMemo = () => {
+type InputMemoProps = {
+  updateMemo: (newMemo: string | null) => void;
+};
+export const InputMemo = ({ updateMemo }: InputMemoProps) => {
   const [memo, setMemo] = useState<string | null>(null);
   return (
     <div>
@@ -18,6 +21,9 @@ export const InputMemo = () => {
           } else {
             setMemo(null);
           }
+        }}
+        onBlur={() => {
+          updateMemo(memo);
         }}
       />
     </div>

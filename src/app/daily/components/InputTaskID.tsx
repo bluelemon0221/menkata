@@ -38,7 +38,7 @@ export const InputTaskID = ({ updateJobCode }: UpdateJobCode) => {
       updateJobCode(newInput);
     } else {
       setJobcode(null);
-      return;
+      updateJobCode(null);
     }
   };
   return (

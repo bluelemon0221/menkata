@@ -49,7 +49,11 @@ export const InputRow = ({ data, onDataChange }: InputRowProps) => {
           />
         </Grid>
         <Grid item xl={2}>
-          <InputMemo />
+          <InputMemo
+            updateMemo={(newMemo) =>
+              onDataChange(data.dateIndex, { memo: newMemo })
+            }
+          />
         </Grid>
         <Grid item xl={3}>
           <DisplayJob jobcode={data.jobCode} />
