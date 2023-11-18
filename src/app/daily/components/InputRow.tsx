@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { Grid } from "@mui/material";
+import React from "react";
+import { Box } from "@mui/material";
 import { InputTaskID } from "./InputTaskID";
 import { InputDetails } from "./InputDetails";
 import { InputHour } from "./InputHour";
@@ -17,7 +17,8 @@ type InputRowProps = {
 };
 
 export const InputRow = ({ data, onDataChange }: InputRowProps) => {
-  const handleInputChange = (
+  // 入力項目の更新を共通化する関数
+  const updateInput = (
     key: keyof typeof data,
     value: string | number | null
   ) => {
@@ -26,39 +27,25 @@ export const InputRow = ({ data, onDataChange }: InputRowProps) => {
 
   return (
     <div>
-      <Grid container>
-        <Grid item xl={0.8}>
-          <InputTaskID
-            updateJobCode={(newJobCode) =>
-              onDataChange(data.dateIndex, { jobCode: newJobCode })
-            }
-          />
-        </Grid>
-        <Grid item xl={1.3}>
-          <InputDetails
-            updateDetailsCode={(newDetailsCode) =>
-              onDataChange(data.dateIndex, { detailsCode: newDetailsCode })
-            }
-          />
-        </Grid>
-        <Grid item xl={0.68}>
-          <InputHour
-            updateHour={(newHour) =>
-              onDataChange(data.dateIndex, { hour: newHour })
-            }
-          />
-        </Grid>
-        <Grid item xl={2}>
-          <InputMemo
-            updateMemo={(newMemo) =>
-              onDataChange(data.dateIndex, { memo: newMemo })
-            }
-          />
-        </Grid>
-        <Grid item xl={3}>
-          <DisplayJob jobcode={data.jobCode} />
-        </Grid>
-      </Grid>
+      {/* 入力項目を横に配置するための Box コンポーネント */}
+      <Box sx={{ display: "flex", gap: 2, marginY: 1 }}>
+        {/* タスクIDの入力コンポーネント */}
+        <InputTaskID
+          updateJobCode={(newJobCode) => updateInput("jobCode", newJobCode)}
+        />
+        {/* 詳細コードの入力コンポーネント */}
+        <InputDetails
+          updateDetailsCode={(newDetailsCode) =>
+            updateInput("detailsCode", newDetailsCode)
+          }
+        />
+        {/* 時間の入力コンポーネント */}
+        <InputHour updateHour={(newHour) => updateInput("hour", newHour)} />
+        {/* メモの入力コンポーネント */}
+        <InputMemo updateMemo={(newMemo) => updateInput("memo", newMemo)} />
+        {/* ジョブの表示コンポーネント */}
+        <DisplayJob jobcode={data.jobCode} />
+      </Box>
     </div>
   );
 };

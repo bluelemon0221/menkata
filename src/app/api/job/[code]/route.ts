@@ -12,7 +12,9 @@ export async function GET(
     if (!code) {
       return;
     }
-    const results = await query(`SELECT * FROM jobs where code = "${code}"`);
+    const results = await query(
+      `SELECT start, client_name, address1, owner, details1, details2, contractor, address2 FROM jobs WHERE code = "${code}"`
+    );
     return NextResponse.json(results, { status: 200 });
   } catch (error) {
     return NextResponse.json(error);

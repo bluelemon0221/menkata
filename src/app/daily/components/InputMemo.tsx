@@ -9,7 +9,6 @@ export const InputMemo = ({ updateMemo }: InputMemoProps) => {
   const [memo, setMemo] = useState<string | null>(null);
   return (
     <div>
-      <div>{`${memo}`}</div>
       <TextField
         label="備考"
         margin="normal"
@@ -24,6 +23,9 @@ export const InputMemo = ({ updateMemo }: InputMemoProps) => {
         }}
         onBlur={() => {
           updateMemo(memo);
+        }}
+        InputLabelProps={{
+          shrink: true,
         }}
       />
     </div>
