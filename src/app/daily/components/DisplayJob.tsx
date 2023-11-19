@@ -3,8 +3,9 @@ import {
   AccordionDetails,
   AccordionSummary,
   Typography,
+  CircularProgress,
 } from "@mui/material";
-import React from "react";
+import { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import useSWR from "swr";
 
@@ -23,17 +24,22 @@ type Job = {
 // JobCode型の定義
 type JobCode = { jobcode: string | null };
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+// fetcher関数
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  return res.json();
+};
 
 // DisplayJobコンポーネント
 export const DisplayJob = ({ jobcode }: JobCode) => {
   // SWRのhookを使用してデータをフェッチ
-  const { data: job, error } = useSWR<Job[]>(
-    jobcode ? `/api/job/${jobcode}` : null,
-    fetcher
-  );
+  const {
+    data: job,
+    error,
+    isValidating,
+  } = useSWR<Job[]>(jobcode ? `/api/job/${jobcode}` : null, fetcher);
 
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>(false);
 
   // Accordionが展開・折り畳みられたときのハンドラ関数
   const handleChange =
@@ -44,7 +50,9 @@ export const DisplayJob = ({ jobcode }: JobCode) => {
   return (
     <div>
       <div className="mt-5">
-        {job?.length ? (
+        {isValidating ? (
+          <CircularProgress />
+        ) : job?.length ? (
           job.map((u: Job, index: number) => {
             // 作業開始日のフォーマット変換
             const startDate = u.start
