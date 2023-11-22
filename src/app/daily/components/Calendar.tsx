@@ -1,43 +1,50 @@
+// FullCalendarを使用して日付がクリックされた際にDailyReportコンポーネントを呼び出すカレンダーコンポーネント
 "use client";
-import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import React from "react";
-import { styled } from "@mui/system";
-import { Dayjs } from "dayjs";
+import { useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import allLocales from "@fullcalendar/core/locales-all";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
+import { DailyReport } from "./DailyReport";
 
-const FullScreenCalendar = styled(DateCalendar)({
-  width: "100vw",
-  height: "100vh",
-  maxHeight: "100vh",
-  minHeight: "100vh",
-  overflow: "visible",
-  fontSize: "10rem",
-  ".MuiDayCalendar-slideTransition": {
-    overflow: "visible",
-  },
-  ".MuiPickersDay-root": {
-    fontSize: "7rem",
-    height: "120px",
-    width: "160px",
-  },
-  ".MuiDayCalendar-weekDayLabel": {
-    fontSize: "7rem",
-    height: "120px",
-    width: "160px",
-  },
-});
-
-const japaneseDayFormatter = (day: string, date: Dayjs) => {
-  const japaneseWeekdays = ["日", "月", "火", "水", "木", "金", "土"];
-  const dayIndex = date.day();
-
-  return japaneseWeekdays[dayIndex];
-};
-
+// カレンダーコンポーネント
 export const Calendar = () => {
+  // DailyReportの表示状態を管理するstate
+  const [showReport, setShowReport] = useState(false);
+
+  // DailyReportが表示される日付を管理するstate
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  // カレンダーコンポーネントのオプションを管理するstate
+  const [calendarOptions, setCalendarOptions] = useState({
+    plugins: [dayGridPlugin, interactionPlugin],
+    locales: allLocales,
+    locale: "ja",
+    contentHeight: 800,
+  });
+
+  // 日付がクリックされた時の処理
+  const handleDateClick = (arg: DateClickArg) => {
+    // クリックされた日付を取得
+    const clickedDate = arg.dateStr;
+
+    // DailyReportコンポーネントを表示するためのstateを更新
+    setSelectedDate(clickedDate);
+    setShowReport(true);
+  };
+
+  // ダイアログが閉じられたときの処理
+  const closeDialog = () => {
+    setShowReport(false);
+  };
+
+  // FullCalendarコンポーネントをレンダリング
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <FullScreenCalendar dayOfWeekFormatter={japaneseDayFormatter as any} />
-    </LocalizationProvider>
+    <div>
+      <FullCalendar {...calendarOptions} dateClick={handleDateClick} />
+      {showReport && (
+        <DailyReport date={selectedDate} closeDialog={closeDialog} />
+      )}
+    </div>
   );
 };

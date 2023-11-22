@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { InputRow } from "./InputRow";
 import { DailyInputObject } from "../types";
 import {
+  Button,
   Container,
   LinearProgress,
   linearProgressClasses,
@@ -24,7 +25,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 // インプットグループのコンポーネント関数
-export const InputGroup = () => {
+export const InputGroup = ({ date }: { date: string }) => {
   // ステートの定義
   const [sumHour, setSumHour] = useState<number>(0);
   const [maxHour, setMaxHour] = useState<number>(8);
@@ -33,7 +34,7 @@ export const InputGroup = () => {
   // データの初期化
   const [inputObject, setInputObject] = useState<DailyInputObject>({
     userId: 1,
-    date: "2023-01-01",
+    date: date,
     data: Array.from({ length: 10 }, (_, index) => ({
       dateIndex: index,
       jobCode: null,
@@ -61,7 +62,7 @@ export const InputGroup = () => {
       const newIndex = prev.data.length;
       return {
         userId: prev.userId,
-        date: "2023-0201", // 適切な初期値に変更
+        date: date, // 適切な初期値に変更
         data: [
           ...prev.data,
           {
@@ -108,7 +109,11 @@ export const InputGroup = () => {
           />
         ))}
       </Container>
-      <button onClick={addInputRow}>Add InputRow</button>
+      <Container sx={{ textAlign: "center" }}>
+        <Button onClick={addInputRow} variant="outlined">
+          行を追加する
+        </Button>
+      </Container>
     </div>
   );
 };

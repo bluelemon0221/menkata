@@ -1,12 +1,14 @@
 import React from "react";
 import { InputGroup } from "./components/InputGroup";
 import { Calendar } from "./components/Calendar";
+import { DailyReport } from "./components/DailyReport";
 
 const page = () => {
   return (
     <div>
       <Calendar />
-      <InputGroup />
+      {/* <DailyReport /> */}
+      {/* <InputGroup /> */}
     </div>
   );
 };
