@@ -5,7 +5,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import allLocales from "@fullcalendar/core/locales-all";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
-import { DailyReport } from "./DailyReport";
+import { InputGroup } from "./InputGroup";
 
 // カレンダーコンポーネント
 export const Calendar = () => {
@@ -43,7 +43,7 @@ export const Calendar = () => {
     <div>
       <FullCalendar {...calendarOptions} dateClick={handleDateClick} />
       {showReport && (
-        <DailyReport date={selectedDate} closeDialog={closeDialog} />
+        <InputGroup date={selectedDate} closeDialog={closeDialog} />
       )}
     </div>
   );

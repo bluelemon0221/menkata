@@ -8,24 +8,28 @@ import {
   LinearProgress,
   linearProgressClasses,
   styled,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Typography,
 } from "@mui/material";
-
-// プログレスバーの見た目のカスタム
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 10,
-  borderRadius: 5,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor:
-      theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: theme.palette.mode === "light" ? "#1a90ff" : "#308fe8",
-  },
-}));
+import { Close } from "@mui/icons-material";
+import { Box } from "@mui/system";
+import { InputInfo } from "./InputInfo";
 
 // インプットグループのコンポーネント関数
-export const InputGroup = ({ date }: { date: string }) => {
+export const InputGroup = ({
+  date,
+  closeDialog,
+}: {
+  date: string | null;
+  closeDialog: () => void;
+}) => {
+  // ダイアログの表示状態を管理するstate
+  const [open, setOpen] = useState(true);
   // ステートの定義
   const [sumHour, setSumHour] = useState<number>(0);
   const [maxHour, setMaxHour] = useState<number>(8);
@@ -34,7 +38,7 @@ export const InputGroup = ({ date }: { date: string }) => {
   // データの初期化
   const [inputObject, setInputObject] = useState<DailyInputObject>({
     userId: 1,
-    date: date,
+    date: date!,
     data: Array.from({ length: 10 }, (_, index) => ({
       dateIndex: index,
       jobCode: null,
@@ -62,7 +66,7 @@ export const InputGroup = ({ date }: { date: string }) => {
       const newIndex = prev.data.length;
       return {
         userId: prev.userId,
-        date: date, // 適切な初期値に変更
+        date: date!, // 適切な初期値に変更
         data: [
           ...prev.data,
           {
@@ -76,17 +80,18 @@ export const InputGroup = ({ date }: { date: string }) => {
       };
     });
   };
+  // ダイアログを閉じるボタンがクリックされた時の処理
+  const handleClose = () => {
+    setOpen(false);
+    // closeDialog関数を呼び出し、親コンポーネントでの処理をトリガー
+    closeDialog();
+  };
 
   // データ変更時の処理とプログレスバーの更新
   useEffect(() => {
     const hours = inputObject.data.map((data) => data.hour ?? 0);
     const sum = hours.reduce((a, b) => a + b, 0);
     setSumHour(sum);
-    if (sum < maxHour) {
-      setProgress((sum / maxHour) * 100);
-    } else {
-      setProgress(100);
-    }
   }, [inputObject]);
 
   // コンポーネントの描画
@@ -94,26 +99,56 @@ export const InputGroup = ({ date }: { date: string }) => {
     <div>
       {/* デバッグ用途のため、本番環境では非表示にするか削除する */}
       <button onClick={() => console.log(inputObject)}>object</button>
-      <Container maxWidth="xl">
-        <p className="m-5 ml-10">{sumHour} 時間</p>
-        <BorderLinearProgress
-          variant="determinate"
-          value={progress}
-          sx={{ width: 500 }}
-        />
-        {inputObject.data.map((dataItem) => (
-          <InputRow
-            key={dataItem.dateIndex}
-            data={dataItem}
-            onDataChange={onDataChange}
-          />
-        ))}
-      </Container>
-      <Container sx={{ textAlign: "center" }}>
-        <Button onClick={addInputRow} variant="outlined">
-          行を追加する
-        </Button>
-      </Container>
+      <Dialog
+        open={open} // ダイアログの表示状態
+        onClose={handleClose} // ダイアログを閉じるアクション
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        maxWidth="xl"
+        fullWidth
+      >
+        {/* ダイアログのタイトル */}
+        <DialogTitle id="alert-dialog-title">
+          <Box sx={{ justifyContent: "space-between", display: "flex" }}>
+            <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
+              <Typography variant="h4">{date}</Typography>
+
+              <Typography variant="h4">テストユーザー</Typography>
+            </Container>
+            <IconButton aria-aria-label="close" onClick={handleClose}>
+              <Close sx={{ fontSize: "30", color: "success" }} />
+            </IconButton>
+          </Box>
+          <InputInfo sumHour={sumHour} date={date!} />
+        </DialogTitle>
+        {/* ダイアログのコンテンツ */}
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {/* ダイアログの詳細説明 (今回はサンプルテキスト) */}
+            <Container maxWidth="xl">
+              {inputObject.data.map((dataItem) => (
+                <InputRow
+                  key={dataItem.dateIndex}
+                  data={dataItem}
+                  onDataChange={onDataChange}
+                />
+              ))}
+            </Container>
+            <Container sx={{ textAlign: "center" }}>
+              <Button onClick={addInputRow} variant="outlined">
+                行を追加する
+              </Button>
+            </Container>
+          </DialogContentText>
+        </DialogContent>
+        {/* ダイアログのアクション (ボタン) */}
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleClose} variant="contained" disableElevation>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
